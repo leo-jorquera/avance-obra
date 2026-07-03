@@ -1,11 +1,12 @@
 {
-  "exportedAt": "2026-07-03T21:45:03.057Z",
+  "exportedAt": "2026-07-03T21:45:28.507Z",
   "progress": {
     "hernan-castro::DUCTOS SANITARIOS SHAFT::2026-07-03": [
       "1401"
     ],
     "hernan-castro::INSTALACIÓN DE RECEPTACULO Y TINAS::2026-07-03": [
-      "701"
+      "701",
+      "604"
     ],
     "hernan-castro::PRIMERA MANO PINTURA CLOSET::2026-07-03": [
       "901",
@@ -23,6 +24,12 @@
     "hernan-castro::RASGOS DE VENTANAS Y PUERTAS::2026-07-03": [
       "1403",
       "1404"
+    ],
+    "hernan-castro::DISTRIBUCIÓN AP TABIQUERÍA::2026-07-03": [
+      "1301"
+    ],
+    "hernan-castro::YESO DE CIELOS Y MUROS::2026-07-03": [
+      "1401"
     ]
   }
 }
