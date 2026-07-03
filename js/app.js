@@ -18,6 +18,136 @@ function showToast(msg, type) {
   setTimeout(() => { el.remove(); }, 3000);
 }
 
+// ===================== CLOUD SYNC =====================
+
+function getSyncToken() {
+  return localStorage.getItem('avance-obra-sync-token');
+}
+
+function setSyncToken(token) {
+  if (token) localStorage.setItem('avance-obra-sync-token', token);
+  else localStorage.removeItem('avance-obra-sync-token');
+}
+
+function getSyncUser() {
+  return localStorage.getItem('avance-obra-sync-user') || 'leo-jorquera';
+}
+
+function setSyncUser(user) {
+  localStorage.setItem('avance-obra-sync-user', user);
+}
+
+function getSyncRepo() {
+  return localStorage.getItem('avance-obra-sync-repo') || 'avance-obra';
+}
+
+function setSyncRepo(repo) {
+  localStorage.setItem('avance-obra-sync-repo', repo);
+}
+
+function getLastSync() {
+  return localStorage.getItem('avance-obra-last-sync');
+}
+
+function setLastSync() {
+  localStorage.setItem('avance-obra-last-sync', new Date().toISOString());
+}
+
+function configureSync() {
+  const currentToken = getSyncToken() || '';
+  const currentUser = getSyncUser();
+  const currentRepo = getSyncRepo();
+  const token = prompt('Token de GitHub (con permiso repo):', currentToken);
+  if (token === null) return;
+  setSyncToken(token.trim() || '');
+  const user = prompt('Usuario de GitHub:', currentUser);
+  if (user === null) return;
+  setSyncUser(user.trim() || 'leo-jorquera');
+  const repo = prompt('Nombre del repositorio:', currentRepo);
+  if (repo === null) return;
+  setSyncRepo(repo.trim() || 'avance-obra');
+  showToast('Configuración guardada.', 'success');
+  renderAdminExport();
+}
+
+async function syncPush() {
+  const token = getSyncToken();
+  if (!token) { showToast('Configura el token en el panel de control (Admin).', 'warning'); return; }
+  const user = getSyncUser();
+  const repo = getSyncRepo();
+  const url = `https://api.github.com/repos/${user}/${repo}/contents/progress.json`;
+
+  try {
+    const data = {
+      exportedAt: new Date().toISOString(),
+      progress: state.progress
+    };
+    const content = btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2))));
+
+    let sha = null;
+    const getResp = await fetch(url, {
+      headers: { 'Authorization': 'Bearer ' + token, 'Accept': 'application/vnd.github+json' }
+    });
+    if (getResp.ok) {
+      const existing = await getResp.json();
+      sha = existing.sha;
+    }
+
+    const body = { message: 'sync progress ' + new Date().toISOString().slice(0,10), content: content };
+    if (sha) body.sha = sha;
+
+    const putResp = await fetch(url, {
+      method: 'PUT',
+      headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json', 'Accept': 'application/vnd.github+json' },
+      body: JSON.stringify(body)
+    });
+
+    if (putResp.ok) {
+      setLastSync();
+      showToast('Datos subidos correctamente.', 'success');
+    } else {
+      const err = await putResp.json();
+      showToast('Error al subir: ' + (err.message || 'desconocido'), 'error');
+    }
+  } catch(e) {
+    showToast('Error de conexión: ' + e.message, 'error');
+  }
+}
+
+async function syncPull() {
+  const token = getSyncToken();
+  if (!token) { return; }
+  const user = getSyncUser();
+  const repo = getSyncRepo();
+  const url = `https://api.github.com/repos/${user}/${repo}/contents/progress.json`;
+
+  try {
+    const resp = await fetch(url, {
+      headers: { 'Authorization': 'Bearer ' + token, 'Accept': 'application/vnd.github+json' }
+    });
+    if (!resp.ok) return;
+
+    const data = await resp.json();
+    const decoded = decodeURIComponent(escape(atob(data.content)));
+    const parsed = JSON.parse(decoded);
+
+    if (parsed.progress) {
+      const localCount = Object.keys(state.progress).length;
+      const remoteCount = Object.keys(parsed.progress).length;
+      for (const key of Object.keys(parsed.progress)) {
+        state.progress[key] = parsed.progress[key];
+      }
+      saveState();
+      setLastSync();
+      if (remoteCount > 0) {
+        showToast(`Sincronizados ${remoteCount} registros desde la nube.`, 'success');
+      }
+    }
+  } catch(e) {
+    console.warn('Sync pull error:', e);
+  }
+}
+
 function loadState() {
   try {
     const saved = localStorage.getItem('avance-obra-state');
@@ -559,6 +689,14 @@ function renderExport() {
       <button class="btn btn-secondary" onclick="document.getElementById('import-file').click()">📥 Importar datos</button>
       <input type="file" id="import-file" accept=".json" onchange="importData(event)">
       <button class="btn btn-secondary" onclick="resetData()" style="color:var(--danger)">🗑️ Reiniciar mis datos</button>
+    </div>
+    <div style="margin-top:16px">
+      <div style="font-size:14px;font-weight:600;margin-bottom:8px">☁️ Sincronización</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button class="btn btn-success" onclick="syncPush()">⬆️ Subir mi progreso</button>
+        <button class="btn btn-secondary" onclick="syncPull()">⬇️ Descargar progreso</button>
+      </div>
+      <div style="font-size:12px;color:var(--text2);margin-top:6px">${getLastSync() ? 'Última sync: ' + new Date(getLastSync()).toLocaleString('es-CL') : 'Sube tu progreso para verlo desde otro dispositivo'}</div>
     </div>`;
   container.innerHTML = html;
 }
@@ -678,6 +816,8 @@ function renderAdminReport() {
   html += `<div class="export-actions" style="margin-top:16px">
     <button class="btn btn-success" onclick="exportFullReport()">📊 Exportar Excel</button>
     <button class="btn btn-warning" onclick="generateReschedule()">📅 Reprogramar → Sgte. Semana</button>
+    <button class="btn btn-primary" onclick="syncPush()">⬆️ Subir datos a la nube</button>
+    <button class="btn btn-secondary" onclick="syncPull()">⬇️ Bajar datos de la nube</button>
   </div>`;
   container.innerHTML = html;
 }
@@ -809,6 +949,15 @@ function renderAdminExport() {
         <button class="btn btn-secondary" onclick="resetAllData()" style="color:var(--danger)">🗑️ Reiniciar todo</button>
       </div>
       <input type="file" id="import-all-file" accept=".json" onchange="importAllData(event)" style="display:none">
+    </div>
+    <div style="margin-top:16px">
+      <div style="font-size:14px;font-weight:600;margin-bottom:8px">☁️ Sincronización en la nube</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button class="btn btn-primary" onclick="configureSync()">🔧 Configurar sync</button>
+        <button class="btn btn-success" onclick="syncPush()">⬆️ Subir datos</button>
+        <button class="btn btn-secondary" onclick="syncPull()">⬇️ Descargar datos</button>
+      </div>
+      <div id="sync-status" style="font-size:12px;color:var(--text2);margin-top:6px">${getSyncToken() ? '✅ Sincronización configurada' : '⚠️ No configurado'}${getLastSync() ? ' · Última sync: ' + new Date(getLastSync()).toLocaleString('es-CL') : ''}</div>
     </div>`;
 }
 
@@ -972,6 +1121,9 @@ window.generateReschedule = generateReschedule;
 window.showToast = showToast;
 window.importAllData = importAllData;
 window.resetAllData = resetAllData;
+window.syncPush = syncPush;
+window.syncPull = syncPull;
+window.configureSync = configureSync;
 
 // ===================== INIT =====================
 
@@ -994,6 +1146,9 @@ document.addEventListener('DOMContentLoaded', () => {
     render();
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('sw.js').catch(() => {});
+    }
+    if (getSyncToken()) {
+      setTimeout(syncPull, 1000);
     }
   } catch (e) {
     console.error('Init error:', e);
