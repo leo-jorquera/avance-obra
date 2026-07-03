@@ -1,12 +1,10 @@
-const CACHE = 'avance-obra-v1';
+const CACHE = 'avance-obra-v2';
 const urls = [
   'index.html',
   'manifest.json',
   'css/style.css',
   'js/app.js',
-  'js/data.js',
-  'js/programa_supervisores.json',
-  'js/control_avance.json'
+  'js/data.js'
 ];
 
 self.addEventListener('install', e => {

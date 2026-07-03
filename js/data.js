@@ -295,6 +295,13 @@ function getTodayWeekdayIndex() {
   return map[day] ?? 0;
 }
 
+function getDeptLabel(code) {
+  const s = String(code);
+  if (s.length === 3) return `Piso ${s[0]} · Depto ${s.slice(1)}`;
+  if (s.length === 4) return `Piso ${s.slice(0,2)} · Depto ${s.slice(2)}`;
+  return code;
+}
+
 function updateActivitiesData(newData) {
   activitiesData = newData;
   localStorage.setItem('avance-obra-custom-data', JSON.stringify(newData));

@@ -6,6 +6,18 @@ let state = {
   progress: {}
 };
 
+function esc(v) {
+  return String(v).replace(/\\/g, '\\\\').replace(/'/g, "\\'");
+}
+
+function showToast(msg, type) {
+  const el = document.createElement('div');
+  el.className = 'toast' + (type ? ' ' + type : '');
+  el.textContent = msg;
+  document.body.appendChild(el);
+  setTimeout(() => { el.remove(); }, 3000);
+}
+
 function loadState() {
   try {
     const saved = localStorage.getItem('avance-obra-state');
@@ -236,12 +248,17 @@ function renderDashboard() {
   const todayLabel = WEEKDAY_FULL[WEEKDAYS[todayIdx]];
   const todayDate = new Date();
   const allProgress = getAllProgress(state.currentUser, todayDate);
+  const firstTime = Object.keys(state.progress).length === 0;
   let html = `
     <div style="margin-bottom:12px">
       <div style="font-size:13px;color:var(--text2)">${sup.name}</div>
       <div style="font-size:20px;font-weight:700">${todayLabel}</div>
       <div style="font-size:13px;color:var(--text2)">${formatDateFull(todayDate)}</div>
     </div>
+    ${firstTime ? `<div class="card" style="border-left:3px solid var(--primary);margin-bottom:12px;font-size:13px">
+      <div style="font-weight:600;margin-bottom:4px">👋 Bienvenido, ${sup.name}</div>
+      <div style="color:var(--text2)">Toca cada departamento para marcarlo como realizado. Usa el menú inferior para ver la semana completa y tu reporte semanal.</div>
+    </div>` : ''}
     <div class="stats-row">
       <div class="stat">
         <div class="stat-num">${allProgress.done}</div>
@@ -285,7 +302,7 @@ function renderDashboard() {
         <div class="dept-grid">`;
       for (const d of depts) {
         const done = isDeptDone(state.currentUser, act.name, d, todayDate);
-        html += `<div class="dept-btn ${done ? 'done' : ''}" onclick="handleDeptClick('${state.currentUser}','${act.name.replace(/'/g, "\\'")}','${d}')">${d}</div>`;
+        html += `<div class="dept-btn ${done ? 'done' : ''}" onclick="handleDeptClick('${state.currentUser}','${esc(act.name)}','${d}')" title="${getDeptLabel(d)}">${d}</div>`;
       }
       html += `</div></div>`;
     }
@@ -345,7 +362,7 @@ function renderWeekView() {
         const allDone = depts.length > 0 && doneDepts.length === depts.length;
         const isToday = dateStr === todayStr;
         const cls = `day-cell${allDone ? ' done' : ''}${isToday ? ' today' : ''}${depts.length > 0 ? ' has-dept' : ''}`;
-        html += `<div class="${cls}" onclick="showDayDetail('${state.currentUser}','${act.name.replace(/'/g, "\\'")}','${dateStr}')">
+        html += `<div class="${cls}" onclick="showDayDetail('${state.currentUser}','${esc(act.name)}','${dateStr}')">
           ${allDone ? '✓' : (depts.length > 0 ? `${doneDepts.length}/${depts.length}` : '—')}
         </div>`;
       }
@@ -390,7 +407,7 @@ function showDayDetail(supId, actName, dateStr) {
       <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(70px,1fr));gap:6px">`;
   for (const d of allDepts) {
     const done = isDeptDone(state.currentUser, actName, d, date);
-    html += `<div class="dept-btn ${done ? 'done' : ''}" onclick="handleDeptClickDay('${state.currentUser}','${actName.replace(/'/g, "\\'")}','${d}','${dateStr}')">${d}</div>`;
+    html += `<div class="dept-btn ${done ? 'done' : ''}" onclick="handleDeptClickDay('${state.currentUser}','${esc(actName)}','${d}','${dateStr}')" title="${getDeptLabel(d)}">${d}</div>`;
   }
   html += `</div>
       <div class="modal-actions">
@@ -425,10 +442,14 @@ function renderReport() {
   const dates = getWeekDates(state.selectedWeek);
 
   let html = `
-    <div style="margin-bottom:12px">
+    <div class="week-selector">
+      <button onclick="shiftWeekReport(-1)">◀</button>
+      <span>Semana del ${formatDate(dates[1])}</span>
+      <button onclick="shiftWeekReport(1)">▶</button>
+    </div>
+    <div style="margin-bottom:8px">
       <div style="font-size:13px;color:var(--text2)">${sup.name}</div>
       <div style="font-size:18px;font-weight:700">Reporte Semanal</div>
-      <div style="font-size:13px;color:var(--text2)">Semana del ${formatDate(dates[1])}</div>
     </div>
     <div class="stats-row">
       <div class="stat">
@@ -458,7 +479,7 @@ function renderReport() {
         <div style="font-weight:600;font-size:14px">${p.actName}</div>
         <div style="font-size:12px;color:var(--text2)">${p.company} · ${WEEKDAY_FULL[p.day]}</div>
         <div style="margin-top:6px;display:flex;flex-wrap:wrap;gap:4px">
-          ${missing.map(d => `<span style="background:rgba(231,76,60,.2);color:var(--danger);padding:2px 8px;border-radius:4px;font-size:12px;font-weight:600">${d}</span>`).join('')}
+          ${missing.map(d => `<span class="pending-dept" title="${getDeptLabel(d)}">${d}</span>`).join('')}
         </div>
         <div style="font-size:11px;color:var(--text2);margin-top:4px">${p.doneDepts.length}/${p.depts.length} completados</div>
       </div>`;
@@ -565,10 +586,10 @@ function importData(e) {
         Object.assign(state.progress, data.progress);
         saveState();
         render();
-        alert('Datos importados correctamente.');
+        showToast('Datos importados correctamente.', 'success');
       }
     } catch (err) {
-      alert('Error al importar: ' + err.message);
+      showToast('Error al importar: ' + err.message, 'error');
     }
   };
   reader.readAsText(file);
@@ -643,7 +664,7 @@ function renderAdminReport() {
         }
         html += `<div style="font-size:12px;padding:3px 0;display:flex;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,.03)">
           <span>${p.actName} <span style="color:var(--text2)">(${WEEKDAY_FULL[p.day]})</span></span>
-          <span style="color:var(--danger)">${p.depts.join(', ')}</span>
+          <span style="color:var(--danger);text-align:right;max-width:40%">${p.depts.join(', ')}</span>
         </div>`;
       }
     } else if (supReport.total > 0) {
@@ -702,11 +723,11 @@ function uploadPlan(e) {
       const data = JSON.parse(ev.target.result);
       if (data && typeof data === 'object') {
         updateActivitiesData(data);
-        alert(`Planificación actualizada con ${Object.keys(data).length} empresas.`);
+        showToast(`Planificación actualizada con ${Object.keys(data).length} empresas.`, 'success');
         render();
       }
     } catch (err) {
-      alert('Error: el archivo debe ser JSON válido. ' + err.message);
+      showToast('El archivo debe ser JSON válido.', 'error');
     }
   };
   reader.readAsText(file);
@@ -728,7 +749,7 @@ function generateReschedule() {
   const dates = getWeekDates(state.selectedWeek);
   const pending = getPendingForReschedule(dates);
   const totalPending = Object.values(pending).reduce((s, comp) => s + Object.keys(comp).length, 0);
-  if (totalPending === 0) { alert('No hay actividades pendientes para reprogramar.'); return; }
+  if (totalPending === 0) { showToast('No hay actividades pendientes para reprogramar.', 'warning'); return; }
   const nextMonday = new Date(state.selectedWeek);
   nextMonday.setDate(nextMonday.getDate() + 7);
   const nextDates = getWeekDates(nextMonday);
@@ -742,7 +763,7 @@ function generateReschedule() {
   state.selectedWeek = nextMonday;
   saveState();
   render();
-  alert(`✅ Plan actualizado para la semana del ${formatDate(nextDates[1])}.\n${totalPending} actividades con deptos pendientes reprogramadas. Las actividades completadas fueron removidas.`);
+  showToast(`Plan actualizado: ${totalPending} actividades reprogramadas para la semana del ${formatDate(nextDates[1])}.`, 'success');
 }
 
 function resetPlan() {
@@ -750,7 +771,7 @@ function resetPlan() {
     localStorage.removeItem('avance-obra-custom-data');
     activitiesData = ACTIVITIES_DATA;
     render();
-    alert('Datos originales restaurados.');
+    showToast('Datos originales restaurados.', 'success');
   }
 }
 
@@ -844,9 +865,9 @@ function importAllData(e) {
         updateActivitiesData(data.customData);
       }
       render();
-      alert('Datos importados correctamente.');
-    } catch (err) {
-      alert('Error: ' + err.message);
+      showToast('Datos importados globales correctamente.', 'success');
+      } catch (err) {
+        showToast('Error: ' + err.message, 'error');
     }
   };
   reader.readAsText(file);
@@ -920,6 +941,7 @@ window.toggleActivity = toggleActivity;
 window.handleDeptClick = handleDeptClick;
 window.handleDeptClickDay = handleDeptClickDay;
 window.shiftWeek = shiftWeek;
+window.shiftWeekReport = shiftWeek;
 window.adminShiftWeek = adminShiftWeek;
 window.showDayDetail = showDayDetail;
 window.closeDayModal = closeDayModal;
@@ -933,6 +955,7 @@ window.exportFullReport = exportFullReport;
 window.exportAllData = exportAllData;
 window.exportSupervisorExcel = exportSupervisorExcel;
 window.generateReschedule = generateReschedule;
+window.showToast = showToast;
 window.importAllData = importAllData;
 window.resetAllData = resetAllData;
 
