@@ -1,5 +1,5 @@
 {
-  "exportedAt": "2026-07-03T21:23:35.767Z",
+  "exportedAt": "2026-07-03T21:29:30.055Z",
   "progress": {
     "hernan-castro::DUCTOS SANITARIOS SHAFT::2026-07-03": [
       "1401"
@@ -10,6 +10,19 @@
     "hernan-castro::PRIMERA MANO PINTURA CLOSET::2026-07-03": [
       "901",
       "902"
+    ],
+    "hernan-castro::PREPARACIÓN CIELO BAÑO::2026-07-03": [
+      "503",
+      "502",
+      "501"
+    ],
+    "hernan-castro::PREPARACIÓN CIELO ZONAS SECAS + LOSALIN::2026-07-03": [
+      "501",
+      "504"
+    ],
+    "hernan-castro::RASGOS DE VENTANAS Y PUERTAS::2026-07-03": [
+      "1403",
+      "1404"
     ]
   }
 }
