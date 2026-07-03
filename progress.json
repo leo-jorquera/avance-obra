@@ -1,5 +1,5 @@
 {
-  "exportedAt": "2026-07-03T21:52:08.342Z",
+  "exportedAt": "2026-07-03T21:55:13.115Z",
   "progress": {
     "hernan-castro::DUCTOS SANITARIOS SHAFT::2026-07-03": [
       "1401"
@@ -30,6 +30,16 @@
     ],
     "hernan-castro::YESO DE CIELOS Y MUROS::2026-07-03": [
       "1401"
+    ],
+    "hernan-castro::INSTALACIÓN DE VENTANAS::2026-07-03": [
+      "1303",
+      "1304"
+    ],
+    "hernan-castro::CANAL SUPERIOR TABIQUERÍA::2026-07-03": [
+      "1401",
+      "1402",
+      "1403",
+      "1404"
     ]
   }
 }
