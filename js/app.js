@@ -814,8 +814,9 @@ function renderAdminReport() {
   }
 
   html += `<div class="export-actions" style="margin-top:16px">
-    <button class="btn btn-success" onclick="exportFullReport()">📊 Exportar Excel</button>
-    <button class="btn btn-warning" onclick="generateReschedule()">📅 Reprogramar → Sgte. Semana</button>
+    <button class="btn btn-success" onclick="exportWeeklyReport()">📊 Reporte Semanal + Reprogramar</button>
+    <button class="btn btn-secondary" onclick="exportFullReport()">📋 Solo Exportar Excel</button>
+    <button class="btn btn-warning" onclick="generateReschedule()">📅 Solo Reprogramar</button>
     <button class="btn btn-primary" onclick="syncPush()">⬆️ Subir datos a la nube</button>
     <button class="btn btn-secondary" onclick="syncPull()">⬇️ Bajar datos de la nube</button>
   </div>`;
@@ -942,8 +943,9 @@ function renderAdminExport() {
     <div style="margin-top:16px">
       <div style="font-size:14px;font-weight:600;margin-bottom:8px">Exportar / Importar</div>
       <div style="display:flex;gap:8px;flex-wrap:wrap">
-        <button class="btn btn-success" onclick="exportFullReport()">📊 Exportar Excel</button>
-        <button class="btn btn-warning" onclick="generateReschedule()">📅 Reprogramar semana</button>
+        <button class="btn btn-success" onclick="exportWeeklyReport()">📊 Reporte Semanal + Reprogramar</button>
+        <button class="btn btn-secondary" onclick="exportFullReport()">📋 Solo Excel</button>
+        <button class="btn btn-warning" onclick="generateReschedule()">📅 Solo Reprogramar</button>
         <button class="btn btn-secondary" onclick="exportAllData()">💾 Exportar JSON</button>
         <button class="btn btn-secondary" onclick="document.getElementById('import-all-file').click()">📥 Importar JSON</button>
         <button class="btn btn-secondary" onclick="resetAllData()" style="color:var(--danger)">🗑️ Reiniciar todo</button>
@@ -996,6 +998,98 @@ function exportFullReport() {
   XLSX.utils.book_append_sheet(wb, ws2, 'Resumen');
   XLSX.writeFile(wb, `reporte-avance-${new Date().toISOString().slice(0,10)}.xlsx`);
   });
+}
+
+function exportWeeklyReport() {
+  const dates = getWeekDates(state.selectedWeek);
+  const report = getConsolidatedReport();
+  const pending = getPendingForReschedule(dates);
+  const totalPending = Object.values(pending).reduce((s, comp) => s + Object.keys(comp).length, 0);
+
+  loadXLSX(() => {
+    const wb = XLSX.utils.book_new();
+
+    // Sheet 1: Resumen
+    const s1 = [['Supervisor', 'Programado', 'Realizado', 'Pendiente', 'Cumplimiento']];
+    for (const r of report) {
+      const pend = r.total - r.done;
+      s1.push([r.supervisor.name, r.total, r.done, pend, r.total ? Math.round(r.done/r.total*100)+'%' : '0%']);
+    }
+    const ws1 = XLSX.utils.aoa_to_sheet(s1);
+    ws1['!cols'] = [{wch:20},{wch:12},{wch:12},{wch:12},{wch:14}];
+    XLSX.utils.book_append_sheet(wb, ws1, 'Resumen Semanal');
+
+    // Sheet 2: Detalle por actividad
+    const s2 = [['Supervisor', 'Empresa', 'Actividad', 'Día', 'Depto', 'Estado']];
+    for (const r of report) {
+      for (const p of r.pendingActivities) {
+        for (const d of p.depts) {
+          s2.push([r.supervisor.name, p.company, p.actName, WEEKDAY_FULL[p.day], d, 'Pendiente']);
+        }
+      }
+    }
+    // add completed ones with no pending
+    for (const r of report) {
+      if (r.pendingActivities.length === 0 && r.total > 0) {
+        s2.push([r.supervisor.name, '—', '✅ Todas completadas', '—', '—', 'Hecho']);
+      }
+    }
+    const ws2 = XLSX.utils.aoa_to_sheet(s2);
+    ws2['!cols'] = [{wch:20},{wch:22},{wch:38},{wch:12},{wch:8},{wch:12}];
+    XLSX.utils.book_append_sheet(wb, ws2, 'Detalle');
+
+    // Sheet 3: Reprogramación
+    const nextMonday = new Date(state.selectedWeek);
+    nextMonday.setDate(nextMonday.getDate() + 7);
+    const nextDates = getWeekDates(nextMonday);
+    const nextPlan = generateNextWeekPlan(pending);
+
+    const s3 = [['Empresa', 'Actividad', 'Deptos Pendientes', 'Lun ' + nextDates[1].getDate(), 'Mar ' + nextDates[2].getDate(), 'Mié ' + nextDates[3].getDate(), 'Jue ' + nextDates[4].getDate(), 'Vie ' + nextDates[0].getDate()]];
+    for (const comp of Object.keys(nextPlan)) {
+      const acts = nextPlan[comp].activities || [];
+      for (const act of acts) {
+        const week = nextPlan[comp].week[act.name];
+        if (!week) continue;
+        const pendDepts = pending[comp]?.[act.name];
+        if (!pendDepts || pendDepts.length === 0) continue;
+        s3.push([comp, act.name, pendDepts.join(', '), (week.mon||[]).join(','), (week.tue||[]).join(','), (week.wed||[]).join(','), (week.thu||[]).join(','), (week.fri||[]).join(',')]);
+      }
+    }
+    const ws3 = XLSX.utils.aoa_to_sheet(s3);
+    ws3['!cols'] = [{wch:22},{wch:38},{wch:25},{wch:10},{wch:10},{wch:10},{wch:10},{wch:10}];
+    XLSX.utils.book_append_sheet(wb, ws3, 'Reprogramación');
+
+    XLSX.writeFile(wb, `reporte-semanal-${new Date().toISOString().slice(0,10)}.xlsx`);
+  });
+
+  // Auto-reprogramar después de descargar
+  if (totalPending > 0) {
+    setTimeout(() => {
+      const dates = getWeekDates(state.selectedWeek);
+      const pending = getPendingForReschedule(dates);
+      const totalPending = Object.values(pending).reduce((s, comp) => s + Object.keys(comp).length, 0);
+      if (totalPending === 0) return;
+      const nextMonday = new Date(state.selectedWeek);
+      nextMonday.setDate(nextMonday.getDate() + 7);
+      const nextDates = getWeekDates(nextMonday);
+      const msg = Object.entries(pending).map(([comp, acts]) => {
+        const actsList = Object.keys(acts).map(a => `  • ${a} (${acts[a].length} deptos)`).join('\n');
+        return `${comp}:\n${actsList}`;
+      }).join('\n\n');
+      if (confirm(`Reporte descargado.\n\nActividades pendientes de esta semana:\n\n${msg}\n\n¿Reprogramar automáticamente para la semana del ${formatDate(nextDates[1])}?`)) {
+        const nextPlan = generateNextWeekPlan(pending);
+        updateActivitiesData(nextPlan);
+        state.selectedWeek = nextMonday;
+        saveState();
+        render();
+        showToast(`Plan actualizado: ${totalPending} actividades reprogramadas.`, 'success');
+      }
+    }, 500);
+  } else {
+    setTimeout(() => {
+      showToast('No hay actividades pendientes. Todas completadas ✅', 'success');
+    }, 500);
+  }
 }
 
 function exportAllData() {
@@ -1115,6 +1209,7 @@ window.uploadPlan = uploadPlan;
 window.exportPlanTemplate = exportPlanTemplate;
 window.resetPlan = resetPlan;
 window.exportFullReport = exportFullReport;
+window.exportWeeklyReport = exportWeeklyReport;
 window.exportAllData = exportAllData;
 window.exportSupervisorExcel = exportSupervisorExcel;
 window.generateReschedule = generateReschedule;
