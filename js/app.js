@@ -638,7 +638,7 @@ function renderReport() {
     </div>`;
   }
 
-  html += `<div style="margin-top:16px"><button class="btn btn-secondary" onclick="exportSupervisorExcel()" style="width:100%">📥 Descargar Excel</button></div>`;
+  html += `<div style="margin-top:16px"><button class="btn btn-primary" onclick="exportSupervisorExcel()" style="width:100%">📥 Descargar Excel</button></div>`;
   container.innerHTML = html;
 }
 
@@ -849,8 +849,9 @@ function renderAdminUpload() {
     </div>
     <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px">
       <button class="btn btn-primary" onclick="document.getElementById('upload-plan-file').click()">📂 Subir JSON</button>
-      <button class="btn btn-success" onclick="exportFullReport()">📊 Exportar Excel</button>
-      <button class="btn btn-warning" onclick="generateReschedule()">📅 Reprogramar semana</button>
+      <button class="btn btn-success" onclick="exportWeeklyReport()">📊 Reporte + Reprogramar</button>
+      <button class="btn btn-secondary" onclick="exportFullReport()">📋 Solo Excel</button>
+      <button class="btn btn-warning" onclick="generateReschedule()">📅 Solo Reprogramar</button>
       <button class="btn btn-secondary" onclick="exportPlanTemplate()">📄 Plantilla JSON</button>
       <button class="btn btn-secondary" onclick="resetPlan()">🔄 Restaurar original</button>
     </div>
