@@ -513,6 +513,7 @@ function renderReport() {
 }
 
 function exportSupervisorExcel() {
+  loadXLSX(() => {
   const weekProgress = getWeekProgress(state.currentUser);
   const sup = SUPERVISORS.find(s => s.id === state.currentUser);
   const wb = XLSX.utils.book_new();
@@ -528,6 +529,7 @@ function exportSupervisorExcel() {
   ws['!cols'] = [{wch:20},{wch:35},{wch:12},{wch:30},{wch:30},{wch:30}];
   XLSX.utils.book_append_sheet(wb, ws, 'Reporte');
   XLSX.writeFile(wb, `reporte-${sup.id}-${new Date().toISOString().slice(0,10)}.xlsx`);
+  });
 }
 
 // ===================== SUPERVISOR EXPORT =====================
@@ -808,8 +810,19 @@ function renderAdminExport() {
       </div>
       <input type="file" id="import-all-file" accept=".json" onchange="importAllData(event)" style="display:none">
     </div>`;
+}
+
+function loadXLSX(cb) {
+  if (typeof XLSX !== 'undefined') { cb(); return; }
+  const s = document.createElement('script');
+  s.src = 'https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js';
+  s.onload = cb;
+  s.onerror = () => { showToast('Error al cargar librería Excel. Verifica tu conexión.', 'error'); };
+  document.head.appendChild(s);
+}
 
 function exportFullReport() {
+  loadXLSX(() => {
   const dates = getWeekDates(state.selectedWeek);
   const report = getConsolidatedReport();
   const wb = XLSX.utils.book_new();
@@ -833,6 +846,7 @@ function exportFullReport() {
   ws2['!cols'] = [{wch:18},{wch:12},{wch:12},{wch:14}];
   XLSX.utils.book_append_sheet(wb, ws2, 'Resumen');
   XLSX.writeFile(wb, `reporte-avance-${new Date().toISOString().slice(0,10)}.xlsx`);
+  });
 }
 
 function exportAllData() {
