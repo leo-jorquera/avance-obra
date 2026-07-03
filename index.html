@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#16213e">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="manifest" href="manifest.json">
+  <title>Avance Orompello Centro</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div id="app">
+
+    <div class="header">
+      <div>
+        <div class="sub" id="header-supervisor">Orompello Centro</div>
+        <h1 id="header-title">Avance Diario</h1>
+      </div>
+      <div class="header-actions">
+        <button class="btn-icon" id="btn-logout" title="Cerrar sesión">⟳</button>
+      </div>
+    </div>
+
+    <div class="screen active" id="screen-login">
+      <div class="content login-screen">
+        <div class="logo">🏗️</div>
+        <h2>Avance Orompello</h2>
+        <p>Selecciona tu nombre para registrar tu avance diario</p>
+        <div class="login-grid"></div>
+      </div>
+    </div>
+
+    <div class="screen" id="screen-dashboard">
+      <div class="content" id="dashboard-content"></div>
+    </div>
+
+    <div class="screen" id="screen-week">
+      <div class="content" id="week-content"></div>
+    </div>
+
+    <div class="screen" id="screen-report">
+      <div class="content" id="report-content"></div>
+    </div>
+
+    <div class="screen" id="screen-export">
+      <div class="content" id="export-content"></div>
+    </div>
+
+    <div class="screen" id="screen-admin">
+      <div class="content" id="admin-content"></div>
+    </div>
+
+    <div class="screen" id="screen-upload">
+      <div class="content" id="upload-content"></div>
+    </div>
+
+    <div class="bottom-nav" id="nav-supervisor" style="display:none">
+      <button class="nav-btn active" data-view="dashboard"><span class="nav-icon">📋</span> Hoy</button>
+      <button class="nav-btn" data-view="week"><span class="nav-icon">📅</span> Semana</button>
+      <button class="nav-btn" data-view="report"><span class="nav-icon">📊</span> Reporte</button>
+      <button class="nav-btn" data-view="export"><span class="nav-icon">⚙️</span> Datos</button>
+    </div>
+
+    <div class="bottom-nav" id="nav-admin" style="display:none">
+      <button class="nav-btn active" data-view="admin-report"><span class="nav-icon">📊</span> Reportes</button>
+      <button class="nav-btn" data-view="admin-upload"><span class="nav-icon">📂</span> Cargar</button>
+      <button class="nav-btn" data-view="admin-export"><span class="nav-icon">⚙️</span> Control</button>
+    </div>
+
+  </div>
+
+  <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
