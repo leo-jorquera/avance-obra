@@ -115,24 +115,25 @@ async function syncPush() {
 }
 
 async function syncPull() {
-  const token = getSyncToken();
-  if (!token) { return; }
   const user = getSyncUser();
   const repo = getSyncRepo();
-  const url = `https://api.github.com/repos/${user}/${repo}/contents/progress.json`;
+  const token = getSyncToken();
 
   try {
-    const resp = await fetch(url, {
-      headers: { 'Authorization': 'Bearer ' + token, 'Accept': 'application/vnd.github+json' }
-    });
+    let resp;
+    if (token) {
+      resp = await fetch(`https://api.github.com/repos/${user}/${repo}/contents/progress.json`, {
+        headers: { 'Authorization': 'Bearer ' + token, 'Accept': 'application/vnd.github+json' }
+      });
+    } else {
+      resp = await fetch(`https://raw.githubusercontent.com/${user}/${repo}/main/progress.json`);
+    }
     if (!resp.ok) return;
 
-    const data = await resp.json();
-    const decoded = decodeURIComponent(escape(atob(data.content)));
-    const parsed = JSON.parse(decoded);
+    const raw = await resp.text();
+    const parsed = JSON.parse(raw);
 
     if (parsed.progress) {
-      const localCount = Object.keys(state.progress).length;
       const remoteCount = Object.keys(parsed.progress).length;
       for (const key of Object.keys(parsed.progress)) {
         state.progress[key] = parsed.progress[key];
@@ -142,6 +143,7 @@ async function syncPull() {
       if (remoteCount > 0) {
         showToast(`Sincronizados ${remoteCount} registros desde la nube.`, 'success');
       }
+      if (state.currentUser) render();
     }
   } catch(e) {
     console.warn('Sync pull error:', e);
@@ -1243,9 +1245,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('sw.js').catch(() => {});
     }
-    if (getSyncToken()) {
-      setTimeout(syncPull, 1000);
-    }
+    setTimeout(syncPull, 1500);
   } catch (e) {
     console.error('Init error:', e);
     alert('Error al iniciar la aplicación: ' + e.message);
