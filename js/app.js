@@ -337,6 +337,12 @@ function renderLogin() {
       btn.className = 'login-btn';
       btn.textContent = sup.name;
       btn.addEventListener('click', () => {
+        const pwd = prompt(`Ingrese contraseña para ${sup.name}:`);
+        if (pwd === null) return;
+        if (pwd !== sup.password) {
+          showToast('Contraseña incorrecta', 'error');
+          return;
+        }
         state.currentUser = sup.id;
         state.isAdmin = false;
         state.currentView = 'dashboard';

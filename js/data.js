@@ -1,7 +1,7 @@
 const SUPERVISORS = [
-  { id: 'hernan-castro', name: 'Hernán Castro' },
-  { id: 'oscar-navarrete', name: 'Óscar Navarrete' },
-  { id: 'oscar-carrasco', name: 'Óscar Carrasco' }
+  { id: 'hernan-castro', name: 'Hernán Castro', password: 'hernan123' },
+  { id: 'oscar-navarrete', name: 'Óscar Navarrete', password: 'oscarn123' },
+  { id: 'oscar-carrasco', name: 'Óscar Carrasco', password: 'oscarc123' }
 ];
 
 const ADMIN = { id: 'admin', name: 'Administrador' };
