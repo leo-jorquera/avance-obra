@@ -32,7 +32,13 @@ const ACTIVITIES_DATA = {
     week: {
       "DUCTOS SANITARIOS SHAFT": { fri: ["1401"], mon: ["1402"], tue: ["1403"], wed: ["1404"], thu: ["1401","1402"] },
       "DISTRIBUCIÓN AP TABIQUERÍA": { fri: [], mon: ["1301"], tue: ["1302"], wed: ["1303"], thu: ["1304"] },
-      "INSTALACIÓN DE RECEPTACULO Y TINAS": { fri: ["701"], mon: ["604","605","702"], tue: ["703"], wed: ["704"], thu: ["705","706"] }
+      "INSTALACIÓN DE RECEPTACULO Y TINAS": { fri: ["701"], mon: ["604","605","702"], tue: ["703"], wed: ["704"], thu: ["705","706"] },
+      "WC": { fri: [], mon: [], tue: [], wed: [], thu: [] },
+      "VANITORIO": { fri: [], mon: [], tue: [], wed: [], thu: [] },
+      "GRIFERÍA RECEPTÁCULO Y TINA": { fri: [], mon: [], tue: [], wed: [], thu: [] },
+      "GRIFERÍA VANITORIO": { fri: [], mon: [], tue: [], wed: [], thu: [] },
+      "GRIFERÍA LAVAPLATOS": { fri: [], mon: [], tue: [], wed: [], thu: [] },
+      "MON1IT + GRIFERÍA LAVADORA": { fri: [], mon: [], tue: [], wed: [], thu: [] }
     }
   },
   "C. BUFFALO": {
@@ -52,7 +58,9 @@ const ACTIVITIES_DATA = {
       "PREPARACIÓN CIELO BAÑO": { fri: ["501","502","503"], mon: ["504","505","506"], tue: ["601","602","603"], wed: ["604","605","606"], thu: ["701","702","703"] },
       "PREPARACIÓN CIELO ZONAS SECAS + LOSALIN": { fri: ["501","504"], mon: ["505","506"], tue: ["601","602"], wed: ["603","604"], thu: ["605","606"] },
       "PINTURA CIELO BAÑO": { fri: [], mon: [], tue: ["201","202","203"], wed: ["301","302","303"], thu: ["304","305","306"] },
-      "ENTREGA CANCHA PAPEL": { fri: [], mon: [], tue: [], wed: [], thu: ["201","202","203"] }
+      "ENTREGA CANCHA PAPEL": { fri: [], mon: [], tue: [], wed: [], thu: ["201","202","203"] },
+      "MANO DE TERMINACION PINTURA CLOSET": { fri: [], mon: [], tue: [], wed: [], thu: [] },
+      "PINTURA DE COCINA": { fri: [], mon: [], tue: [], wed: [], thu: [] }
     }
   },
   "CHILTERMIC": {
@@ -61,7 +69,8 @@ const ACTIVITIES_DATA = {
       { name: "DUCTO CAMPANA" }
     ],
     week: {
-      "DUCTOS VENTILACIÓN SHAFT": { fri: ["1401"], mon: ["1402"], tue: ["1301","1403"], wed: ["1304","1404"], thu: ["1401","1402"] }
+      "DUCTOS VENTILACIÓN SHAFT": { fri: ["1401"], mon: ["1402"], tue: ["1301","1403"], wed: ["1304","1404"], thu: ["1401","1402"] },
+      "DUCTO CAMPANA": { fri: [], mon: [], tue: [], wed: [], thu: [] }
     }
   },
   "KINETTA": {
@@ -79,7 +88,9 @@ const ACTIVITIES_DATA = {
       { name: "MARCO METALICO BODEGAS" }
     ],
     week: {
-      "BARANDA METÁLICA": { fri: [], mon: [], tue: [], wed: ["1301","1302","1303","1304","1401","1402","1403","1404"], thu: ["1101","1103"] }
+      "BARANDA METÁLICA": { fri: [], mon: [], tue: [], wed: ["1301","1302","1303","1304","1401","1402","1403","1404"], thu: ["1101","1103"] },
+      "DUCTO BASURA": { fri: [], mon: [], tue: [], wed: [], thu: [] },
+      "MARCO METALICO BODEGAS": { fri: [], mon: [], tue: [], wed: [], thu: [] }
     }
   },
   "MUEBLES NORTON": {
@@ -100,7 +111,8 @@ const ACTIVITIES_DATA = {
       "BASE PISO MUEBLE CLOSET": { fri: [], mon: [], tue: [], wed: [], thu: [] },
       "PIERNA MUEBLE CLOSET": { fri: [], mon: [], tue: [], wed: [], thu: [] },
       "CENEFA MUEBLE CLOSET": { fri: [], mon: [], tue: [], wed: [], thu: [] },
-      "ESTRUCTURA INTERIOR CLOSET": { fri: ["504","601"], mon: ["602"], tue: ["603"], wed: ["604"], thu: ["605","606"] }
+      "ESTRUCTURA INTERIOR CLOSET": { fri: ["504","601"], mon: ["602"], tue: ["603"], wed: ["604"], thu: ["605","606"] },
+      "PUERTA CLOSET": { fri: [], mon: [], tue: [], wed: [], thu: [] }
     }
   },
   "TATTER & BAEZA": {
@@ -111,7 +123,10 @@ const ACTIVITIES_DATA = {
       { name: "CAMPANA" }
     ],
     week: {
-      "INSTALACIÓN ELECTRICA TABIQUERÍA": { fri: [], mon: ["1301"], tue: ["1302"], wed: ["1303","1401","1402"], thu: ["1304","1403","1404"] }
+      "INSTALACIÓN ELECTRICA TABIQUERÍA": { fri: [], mon: ["1301"], tue: ["1302"], wed: ["1303","1401","1402"], thu: ["1304","1403","1404"] },
+      "HORNO": { fri: [], mon: [], tue: [], wed: [], thu: [] },
+      "ENCIMERA": { fri: [], mon: [], tue: [], wed: [], thu: [] },
+      "CAMPANA": { fri: [], mon: [], tue: [], wed: [], thu: [] }
     }
   },
   "HERNAN CASTRO": {
@@ -136,6 +151,8 @@ const ACTIVITIES_DATA = {
       "PICADO Y DESBASTE DE CIELO Y MUROS": { fri: [], mon: [], tue: [], wed: [], thu: ["1404"] },
       "DESPEJE Y REPARACIÓN DESPICHES TERRAZA": { fri: [], mon: [], tue: [], wed: [], thu: ["1403","1404"] },
       "TRAZADO": { fri: [], mon: [], tue: [], wed: [], thu: ["1403","1404"] },
+      "DESPEJE Y CENTRADO TUBERIAS ELECT.": { fri: [], mon: [], tue: [], wed: [], thu: [] },
+      "DESPEJE Y CENTRADO TUBERIAS AP": { fri: [], mon: [], tue: [], wed: [], thu: [] },
       "RASGOS DE VENTANAS Y PUERTAS": { fri: ["1403","1404"], mon: ["1401","1402"], tue: ["1403","1404"], wed: [], thu: [] },
       "CORONACIÓN DE VIGA BALCÓN": { fri: [], mon: [], tue: ["1403","1404"], wed: [], thu: [] },
       "MAQUILLAJE MURO BAÑO Y COCINA": { fri: [], mon: ["1401","1402"], tue: ["1403","1404"], wed: [], thu: [] },
@@ -187,9 +204,11 @@ const ACTIVITIES_DATA = {
       "INSTALACIÓN ELECTRICA TABIQUERÍA": { fri: [], mon: ["1301"], tue: ["1302"], wed: ["1303","1401","1402"], thu: ["1304","1403","1404"] },
       "PRIMERA CARA VOLCANITA": { fri: ["1301"], mon: ["1302"], tue: ["1303"], wed: ["1304","1401","1402"], thu: ["1403","1404"] },
       "DISTRIBUCIÓN AP TABIQUERÍA": { fri: [], mon: ["1301"], tue: ["1302"], wed: ["1303"], thu: ["1304"] },
+      "LANA FISITERM TABIQUERÍA": { fri: [], mon: [], tue: [], wed: [], thu: [] },
       "SEGUNDA CARA VOLCANITA": { fri: ["1004","1101"], mon: ["1102","1103"], tue: ["1202"], wed: ["1203"], thu: ["1204"] },
       "LANA FISITERM SHAFT": { fri: ["906","1004","1005","1101"], mon: ["1103","1201"], tue: [], wed: ["1202","1203","1204"], thu: [] },
       "VOLCOPANEL SHAFT": { fri: ["1004","1005"], mon: ["1101"], tue: ["1103"], wed: ["1201","1202"], thu: ["1203","1204"] },
+      "IMPERMEABILIZACIÓN DE TERRAZA": { fri: [], mon: [], tue: [], wed: [], thu: [] },
       "IMPERMEABILIZACIÓN BAÑOS Y COCINA": { fri: ["1101","1102"], mon: [], tue: ["1103","1104","1105"], wed: [], thu: [] },
       "ENCATRADO RECEPTACULO": { fri: ["1004","1005"], mon: [], tue: ["1101","1102"], wed: ["1103","1104","1105"], thu: [] },
       "HUINCHA Y PASTA TABIQUERÍA": { fri: ["1003","1004"], mon: ["1005"], tue: ["1101","1102"], wed: ["1103"], thu: ["1104","1105"] },
@@ -205,7 +224,11 @@ const ACTIVITIES_DATA = {
       "MUEBLE BASE COCINA": { fri: ["504","603","604"], mon: ["605","606"], tue: ["701","702"], wed: ["703","704"], thu: ["705","706"] },
       "MUEBLE AÉREO COCINA": { fri: ["504","603","604"], mon: ["605","606"], tue: ["701","702"], wed: ["703","704"], thu: ["705","706"] },
       "CENEFA MUEBLE COCINA": { fri: ["504","603","604"], mon: ["605","606"], tue: ["701","702"], wed: ["703","704"], thu: ["705","706"] },
+      "BASE PISO MUEBLE CLOSET": { fri: [], mon: [], tue: [], wed: [], thu: [] },
+      "PIERNA MUEBLE CLOSET": { fri: [], mon: [], tue: [], wed: [], thu: [] },
+      "CENEFA MUEBLE CLOSET": { fri: [], mon: [], tue: [], wed: [], thu: [] },
       "VIGONES ZONAS SECAS": { fri: [], mon: [], tue: [], wed: ["801","802","803","804","805","806"], thu: [] },
+      "CORNISAS ZONAS SECAS": { fri: [], mon: [], tue: [], wed: [], thu: [] },
       "REMATE VIGONES Y CORNISAS": { fri: ["601","602"], mon: ["504","603","604"], tue: ["605","606"], wed: ["701","702"], thu: ["703","704"] },
       "PREPARACIÓN CIELO BAÑO": { fri: ["501","502","503"], mon: ["504","505","506"], tue: ["601","602","603"], wed: ["604","605","606"], thu: ["701","702","703"] }
     }
@@ -237,6 +260,9 @@ const ACTIVITIES_DATA = {
       "MUEBLE BASE COCINA": { fri: ["504","603","604"], mon: ["605","606"], tue: ["701","702"], wed: ["703","704"], thu: ["705","706"] },
       "MUEBLE AÉREO COCINA": { fri: ["504","603","604"], mon: ["605","606"], tue: ["701","702"], wed: ["703","704"], thu: ["705","706"] },
       "CENEFA MUEBLE COCINA": { fri: ["504","603","604"], mon: ["605","606"], tue: ["701","702"], wed: ["703","704"], thu: ["705","706"] },
+      "BASE PISO MUEBLE CLOSET": { fri: [], mon: [], tue: [], wed: [], thu: [] },
+      "PIERNA MUEBLE CLOSET": { fri: [], mon: [], tue: [], wed: [], thu: [] },
+      "CENEFA MUEBLE CLOSET": { fri: [], mon: [], tue: [], wed: [], thu: [] },
       "PREPARACIÓN CIELO BAÑO": { fri: ["501","502","503"], mon: ["504","505","506"], tue: ["601","602","603"], wed: ["604","605","606"], thu: ["701","702","703"] },
       "ESTRUCTURA INTERIOR CLOSET": { fri: ["504","601"], mon: ["602"], tue: ["603"], wed: ["604"], thu: ["605","606"] },
       "PREPARACIÓN CIELO ZONAS SECAS + LOSALIN": { fri: ["501","504"], mon: ["505","506"], tue: ["601","602"], wed: ["603","604"], thu: ["605","606"] },
@@ -244,9 +270,12 @@ const ACTIVITIES_DATA = {
       "REVESTIMIENTO MURO PVC BAÑO": { fri: ["202","301","302"], mon: ["303","304"], tue: ["305","306"], wed: ["401","402","403"], thu: ["404","405","406"] },
       "REVESTIMIENTO DE ZÓCALO": { fri: ["202","301","302"], mon: ["303","304"], tue: ["305","306"], wed: ["401","402","403"], thu: ["404","405","406"] },
       "REVESTIMIENTO MURO PVC SALPICADERO": { fri: ["201","202","203","301","302"], mon: ["303","304"], tue: ["305","306"], wed: ["401","402","403"], thu: ["404","405","406"] },
+      "PUERTAS DE ACCESO PROVISORIA": { fri: [], mon: [], tue: [], wed: [], thu: [] },
       "PUERTAS DE BAÑO Y DORMITORIO": { fri: ["203","301","302"], mon: ["303","304","305"], tue: ["306","401","402"], wed: ["403","404","405","406"], thu: ["501","502","503","504"] },
       "PINTURA CIELO BAÑO": { fri: [], mon: [], tue: ["201","202","203"], wed: ["301","302","303"], thu: ["304","305","306"] },
+      "REVESTIMIENTO ENDOLADO VENTANA": { fri: [], mon: [], tue: [], wed: [], thu: [] },
       "ENTREGA CANCHA PAPEL": { fri: [], mon: [], tue: [], wed: [], thu: ["201","202","203"] },
+      "PUERTA CLOSET": { fri: [], mon: [], tue: [], wed: [], thu: [] },
       "PILASTRAS PUERTAS DE BAÑO Y DORMITORIO": { fri: [], mon: [], tue: [], wed: ["201","202","203"], thu: [] }
     }
   }
