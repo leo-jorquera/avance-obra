@@ -349,7 +349,7 @@ function renderLogin() {
     adminBtn.textContent = '🔑 Administrador';
     adminBtn.addEventListener('click', () => {
       const pwd = prompt('Ingrese contraseña de administrador:');
-      if (pwd === 'admin123') {
+      if (pwd === 'Limc2450725351') {
         state.currentUser = ADMIN.id;
         state.isAdmin = true;
         state.currentView = 'admin-report';
