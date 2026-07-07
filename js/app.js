@@ -529,11 +529,18 @@ function renderWeekView() {
         const dateStr = date.toISOString().slice(0,10);
         const depts = weekData[dayKey] || [];
         const doneDepts = depts.filter(d => isDeptDone(state.currentUser, act.name, d, date));
-        const allDone = depts.length > 0 && doneDepts.length === depts.length;
+        const total = depts.length;
+        const done = doneDepts.length;
+        const allDone = total > 0 && done === total;
+        const someDone = total > 0 && done > 0 && !allDone;
         const isToday = dateStr === todayStr;
-        const cls = `day-cell${allDone ? ' done' : ''}${isToday ? ' today' : ''}${depts.length > 0 ? ' has-dept' : ''}`;
+        let cls = 'day-cell';
+        if (allDone) cls += ' done';
+        else if (someDone) cls += ' partial';
+        if (isToday) cls += ' today';
+        if (total > 0) cls += ' has-dept';
         html += `<div class="${cls}" onclick="showDayDetail('${state.currentUser}','${esc(act.name)}','${dateStr}')">
-          ${allDone ? '✓' : (depts.length > 0 ? `${doneDepts.length}/${depts.length}` : '—')}
+          ${allDone ? '✓' : (total > 0 ? `${done}/${total}` : '—')}
         </div>`;
       }
       html += `</div>`;

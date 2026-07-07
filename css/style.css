@@ -78,6 +78,7 @@ html, body { height: 100%; font-family: -apple-system, 'Segoe UI', Roboto, sans-
 .day-cell:active { transform: scale(.92); }
 .day-cell.has-dept { border-color: var(--accent); background: rgba(15,52,96,.3); }
 .day-cell.done { background: rgba(46,204,113,.25); border-color: var(--success); color: var(--success); }
+.day-cell.partial { background: rgba(241,196,15,.2); border-color: var(--warning); color: var(--warning); }
 .day-cell.today { border-color: var(--primary); box-shadow: 0 0 0 1px var(--primary); }
 .day-cell .check { display: none; }
 .day-cell.done .check { display: inline; }
