@@ -1,5 +1,5 @@
 {
-  "exportedAt": "2026-07-07T14:38:45.003Z",
+  "exportedAt": "2026-07-07T14:38:52.703Z",
   "progress": {
     "hernan-castro::DUCTOS SANITARIOS SHAFT::2026-07-03": [
       "1401"
@@ -168,6 +168,9 @@
     ],
     "oscar-navarrete::INSTALACIÓN DE RECEPTACULO Y TINAS::2026-05-26": [
       "703"
+    ],
+    "oscar-navarrete::INSTALACIÓN DE RECEPTACULO Y TINAS::2026-05-28": [
+      "705"
     ]
   }
 }
