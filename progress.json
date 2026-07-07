@@ -1,5 +1,5 @@
 {
-  "exportedAt": "2026-07-07T14:38:28.636Z",
+  "exportedAt": "2026-07-07T14:38:31.237Z",
   "progress": {
     "hernan-castro::DUCTOS SANITARIOS SHAFT::2026-07-03": [
       "1401"
@@ -154,6 +154,9 @@
     ],
     "oscar-navarrete::DISTRIBUCIÓN AP TABIQUERÍA::2026-05-27": [
       "1303"
+    ],
+    "oscar-navarrete::DISTRIBUCIÓN AP TABIQUERÍA::2026-05-28": [
+      "1304"
     ]
   }
 }
