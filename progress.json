@@ -1,5 +1,5 @@
 {
-  "exportedAt": "2026-07-03T21:55:13.115Z",
+  "exportedAt": "2026-07-07T14:07:36.034Z",
   "progress": {
     "hernan-castro::DUCTOS SANITARIOS SHAFT::2026-07-03": [
       "1401"
@@ -40,6 +40,27 @@
       "1402",
       "1403",
       "1404"
+    ],
+    "hernan-castro::PRIMERA MANO PINTURA CLOSET::2026-07-07": [
+      "905",
+      "906"
+    ],
+    "hernan-castro::PRIMERA MANO PINTURA CLOSET::2026-06-29": [
+      "904",
+      "903"
+    ],
+    "hernan-castro::PRIMERA MANO PINTURA CLOSET::2026-06-30": [
+      "905",
+      "906"
+    ],
+    "hernan-castro::PRIMERA MANO PINTURA CLOSET::2026-07-01": [
+      "1001",
+      "1002"
+    ],
+    "hernan-castro::ENTREGA CANCHA PAPEL::2026-06-25": [
+      "201",
+      "202",
+      "203"
     ]
   }
 }
