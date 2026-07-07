@@ -1,5 +1,5 @@
 {
-  "exportedAt": "2026-07-07T14:38:07.002Z",
+  "exportedAt": "2026-07-07T14:38:13.152Z",
   "progress": {
     "hernan-castro::DUCTOS SANITARIOS SHAFT::2026-07-03": [
       "1401"
@@ -138,6 +138,9 @@
     ],
     "oscar-navarrete::DUCTOS SANITARIOS SHAFT::2026-05-25": [
       "1402"
+    ],
+    "oscar-navarrete::DUCTOS SANITARIOS SHAFT::2026-05-26": [
+      "1403"
     ]
   }
 }
