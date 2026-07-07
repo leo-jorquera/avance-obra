@@ -1,5 +1,5 @@
 {
-  "exportedAt": "2026-07-07T14:42:49.243Z",
+  "exportedAt": "2026-07-07T19:09:52.274Z",
   "progress": {
     "hernan-castro::DUCTOS SANITARIOS SHAFT::2026-07-03": [
       "1401"
@@ -178,6 +178,160 @@
     ],
     "oscar-navarrete::DUCTOS SANITARIOS SHAFT::2026-05-27": [
       "1404"
+    ],
+    "oscar-navarrete::YESO DE CIELOS Y MUROS::2026-05-25": [
+      "1401"
+    ],
+    "oscar-navarrete::YESO DE CIELOS Y MUROS::2026-05-26": [
+      "1402"
+    ],
+    "oscar-navarrete::YESO DE CIELOS Y MUROS::2026-05-27": [
+      "1403"
+    ],
+    "oscar-navarrete::YESO DE CIELOS Y MUROS::2026-05-28": [
+      "1404"
+    ],
+    "oscar-navarrete::PRIMERA MANO PINTURA CLOSET::2026-05-29": [
+      "901",
+      "902"
+    ],
+    "oscar-navarrete::PRIMERA MANO PINTURA CLOSET::2026-05-25": [
+      "903",
+      "904"
+    ],
+    "oscar-navarrete::PRIMERA MANO PINTURA CLOSET::2026-05-26": [
+      "905",
+      "906"
+    ],
+    "oscar-navarrete::PRIMERA MANO PINTURA CLOSET::2026-05-27": [
+      "1001",
+      "1002"
+    ],
+    "oscar-navarrete::PRIMERA MANO PINTURA CLOSET::2026-05-28": [
+      "1003",
+      "1004",
+      "1005"
+    ],
+    "oscar-navarrete::PREPARACIÓN CIELO BAÑO::2026-05-29": [
+      "501",
+      "502",
+      "503"
+    ],
+    "oscar-navarrete::PREPARACIÓN CIELO BAÑO::2026-05-25": [
+      "504",
+      "505",
+      "506"
+    ],
+    "oscar-navarrete::PREPARACIÓN CIELO BAÑO::2026-05-27": [
+      "604",
+      "605",
+      "606"
+    ],
+    "oscar-navarrete::PREPARACIÓN CIELO BAÑO::2026-05-28": [
+      "701",
+      "702",
+      "703"
+    ],
+    "oscar-navarrete::PREPARACIÓN CIELO ZONAS SECAS + LOSALIN::2026-05-29": [
+      "501",
+      "504"
+    ],
+    "oscar-navarrete::PREPARACIÓN CIELO ZONAS SECAS + LOSALIN::2026-05-25": [
+      "505",
+      "506"
+    ],
+    "oscar-navarrete::PREPARACIÓN CIELO ZONAS SECAS + LOSALIN::2026-05-26": [
+      "601",
+      "602"
+    ],
+    "oscar-navarrete::PREPARACIÓN CIELO BAÑO::2026-05-26": [
+      "601",
+      "602",
+      "603"
+    ],
+    "oscar-navarrete::PREPARACIÓN CIELO ZONAS SECAS + LOSALIN::2026-05-27": [
+      "603",
+      "604"
+    ],
+    "oscar-navarrete::PREPARACIÓN CIELO ZONAS SECAS + LOSALIN::2026-05-28": [
+      "605",
+      "606"
+    ],
+    "oscar-navarrete::PINTURA CIELO BAÑO::2026-05-26": [
+      "201",
+      "202",
+      "203"
+    ],
+    "oscar-navarrete::PINTURA CIELO BAÑO::2026-05-27": [
+      "301",
+      "302",
+      "303"
+    ],
+    "oscar-navarrete::ENTREGA CANCHA PAPEL::2026-05-28": [
+      "201",
+      "202",
+      "203"
+    ],
+    "oscar-navarrete::PINTURA CIELO BAÑO::2026-05-28": [
+      "304",
+      "305",
+      "306"
+    ],
+    "oscar-navarrete::DUCTOS VENTILACIÓN SHAFT::2026-05-29": [
+      "1401"
+    ],
+    "oscar-navarrete::DUCTOS VENTILACIÓN SHAFT::2026-05-25": [
+      "1402"
+    ],
+    "oscar-navarrete::DUCTOS VENTILACIÓN SHAFT::2026-05-26": [
+      "1301",
+      "1403"
+    ],
+    "oscar-navarrete::DUCTOS VENTILACIÓN SHAFT::2026-05-27": [
+      "1304",
+      "1404"
+    ],
+    "oscar-navarrete::DUCTOS VENTILACIÓN SHAFT::2026-05-28": [
+      "1401",
+      "1402"
+    ],
+    "oscar-navarrete::INSTALACIÓN DE VENTANAS::2026-05-29": [
+      "1303",
+      "1304"
+    ],
+    "oscar-navarrete::INSTALACIÓN DE VENTANAS::2026-05-25": [
+      "1401"
+    ],
+    "oscar-navarrete::INSTALACIÓN DE VENTANAS::2026-05-26": [
+      "1402"
+    ],
+    "oscar-navarrete::INSTALACIÓN DE VENTANAS::2026-05-27": [
+      "1403"
+    ],
+    "oscar-navarrete::INSTALACIÓN DE VENTANAS::2026-05-28": [
+      "1404"
+    ],
+    "oscar-navarrete::MUEBLE BASE COCINA::2026-05-29": [
+      "504",
+      "603",
+      "604"
+    ],
+    "oscar-navarrete::MUEBLE BASE COCINA::2026-05-25": [
+      "605",
+      "606"
+    ],
+    "oscar-navarrete::MUEBLE BASE COCINA::2026-05-26": [
+      "701",
+      "702"
+    ],
+    "oscar-navarrete::MUEBLE AÉREO COCINA::2026-05-29": [
+      "504",
+      "603",
+      "604"
+    ],
+    "oscar-navarrete::MUEBLE AÉREO COCINA::2026-05-25": [
+      "605",
+      "606"
     ]
   }
 }
