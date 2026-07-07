@@ -73,6 +73,10 @@ function configureSync() {
 async function syncPush() {
   const token = getSyncToken();
   if (!token) { showToast('Configura el token en el panel de control (Admin).', 'warning'); return; }
+  await _syncPush(token, true);
+}
+
+async function _syncPush(token, showToastMsg) {
   const user = getSyncUser();
   const repo = getSyncRepo();
   const url = `https://api.github.com/repos/${user}/${repo}/contents/progress.json`;
@@ -104,13 +108,35 @@ async function syncPush() {
 
     if (putResp.ok) {
       setLastSync();
-      showToast('Datos subidos correctamente.', 'success');
-    } else {
+      if (showToastMsg) showToast('Datos subidos correctamente.', 'success');
+    } else if (showToastMsg) {
       const err = await putResp.json();
       showToast('Error al subir: ' + (err.message || 'desconocido'), 'error');
     }
   } catch(e) {
-    showToast('Error de conexión: ' + e.message, 'error');
+    if (showToastMsg) showToast('Error de conexión: ' + e.message, 'error');
+  }
+}
+
+async function autoSync() {
+  const token = getSyncToken();
+  if (token) await _syncPush(token, false);
+}
+
+let autoPullInterval = null;
+
+function startAutoPull() {
+  stopAutoPull();
+  syncPull();
+  autoPullInterval = setInterval(() => {
+    syncPull();
+  }, 30000);
+}
+
+function stopAutoPull() {
+  if (autoPullInterval) {
+    clearInterval(autoPullInterval);
+    autoPullInterval = null;
   }
 }
 
@@ -134,14 +160,17 @@ async function syncPull() {
     const parsed = JSON.parse(raw);
 
     if (parsed.progress) {
-      const remoteCount = Object.keys(parsed.progress).length;
+      let newCount = 0;
       for (const key of Object.keys(parsed.progress)) {
+        if (JSON.stringify(state.progress[key]) !== JSON.stringify(parsed.progress[key])) {
+          newCount++;
+        }
         state.progress[key] = parsed.progress[key];
       }
       saveState();
       setLastSync();
-      if (remoteCount > 0) {
-        showToast(`Sincronizados ${remoteCount} registros desde la nube.`, 'success');
+      if (newCount > 0) {
+        showToast(`Sincronizados ${newCount} registros nuevos.`, 'success');
       }
       if (state.currentUser) render();
     }
@@ -191,6 +220,7 @@ function toggleDept(supervisorId, activityName, dept, date) {
   if (idx >= 0) state.progress[key].splice(idx, 1);
   else state.progress[key].push(dept);
   saveState();
+  autoSync();
 }
 
 function getCompanyProgress(supervisorId, companyName, date) {
@@ -347,6 +377,7 @@ function renderLogin() {
         state.isAdmin = false;
         state.currentView = 'dashboard';
         saveState();
+        startAutoPull();
         render();
       });
       grid.appendChild(btn);
@@ -362,9 +393,10 @@ function renderLogin() {
         state.isAdmin = true;
         state.currentView = 'admin-report';
         saveState();
+        startAutoPull();
         render();
       } else if (pwd !== null) {
-        alert('Contraseña incorrecta');
+        showToast('Contraseña incorrecta', 'error');
       }
     });
     grid.appendChild(adminBtn);
@@ -1176,6 +1208,7 @@ function logout() {
   state.currentUser = null;
   state.isAdmin = false;
   saveState();
+  stopAutoPull();
   render();
 }
 
