@@ -1,5 +1,5 @@
 {
-  "exportedAt": "2026-07-07T14:18:42.268Z",
+  "exportedAt": "2026-07-07T14:19:49.818Z",
   "progress": {
     "hernan-castro::DUCTOS SANITARIOS SHAFT::2026-07-03": [
       "1401"
@@ -110,6 +110,15 @@
     ],
     "hernan-castro::YESO DE CIELOS Y MUROS::2026-05-11": [
       "1401"
+    ],
+    "hernan-castro::DUCTOS SANITARIOS SHAFT::2026-07-07": [
+      "1403"
+    ],
+    "hernan-castro::DISTRIBUCIÓN AP TABIQUERÍA::2026-07-07": [
+      "1302"
+    ],
+    "hernan-castro::INSTALACIÓN DE RECEPTACULO Y TINAS::2026-07-07": [
+      "703"
     ]
   }
 }
