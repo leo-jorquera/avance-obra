@@ -422,7 +422,7 @@ function renderDashboard() {
   let html = `
     <div style="margin-bottom:12px">
       <div style="font-size:13px;color:var(--text2)">${sup.name}</div>
-      <div style="font-size:20px;font-weight:700">${todayLabel}</div>
+      <div style="font-size:20px;font-weight:700;color:var(--danger)">📌 ${todayLabel}</div>
       <div style="font-size:13px;color:var(--text2)">${formatDateFull(todayDate)}</div>
     </div>
     ${firstTime ? `<div class="card" style="border-left:3px solid var(--primary);margin-bottom:12px;font-size:13px">
@@ -499,20 +499,23 @@ function renderWeekView() {
   const companies = SUPERVISOR_COMPANIES[state.currentUser] || [];
   const dates = getWeekDates(state.selectedWeek);
   const todayStr = new Date().toISOString().slice(0,10);
+  const weekDayNames = ['Vie', 'Lun', 'Mar', 'Mié', 'Jue'];
+  const todayDow = new Date().getDay();
+  const weekDowMap = [5, 1, 2, 3, 4];
+  let weekHeaderHtml = '<div class="week-header"><div>Actividad</div>';
+  for (let i = 0; i < 5; i++) {
+    const isTodayHead = weekDowMap[i] === todayDow;
+    weekHeaderHtml += `<div${isTodayHead ? ' class="today-header"' : ''}>${weekDayNames[i]} ${dates[i].getDate()}</div>`;
+  }
+  weekHeaderHtml += '</div>';
   let html = `
     <div class="week-selector">
       <button onclick="shiftWeek(-1)">◀</button>
       <span>Semana del ${formatDate(dates[1])}</span>
       <button onclick="shiftWeek(1)">▶</button>
     </div>
-    <div class="week-header">
-      <div>Actividad</div>
-      <div>Vie ${dates[0].getDate()}</div>
-      <div>Lun ${dates[1].getDate()}</div>
-      <div>Mar ${dates[2].getDate()}</div>
-      <div>Mié ${dates[3].getDate()}</div>
-      <div>Jue ${dates[4].getDate()}</div>
-    </div>`;
+    ${weekHeaderHtml}
+  `;
   for (const comp of companies) {
     const data = activitiesData[comp];
     if (!data) continue;
