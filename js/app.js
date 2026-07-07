@@ -542,10 +542,10 @@ function showDayDetail(supId, actName, dateStr) {
     <div class="modal" onclick="event.stopPropagation()">
       <h3>${actName}</h3>
       <p style="color:var(--text2);margin-bottom:12px">${dayLabel}</p>
-      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(70px,1fr));gap:6px">`;
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(70px,1fr));gap:6px" id="day-dept-grid">`;
   for (const d of allDepts) {
     const done = isDeptDone(state.currentUser, actName, d, date);
-    html += `<div class="dept-btn ${done ? 'done' : ''}" onclick="handleDeptClickDay('${state.currentUser}','${esc(actName)}','${d}','${dateStr}')" title="${getDeptLabel(d)}">${d}</div>`;
+    html += `<div class="dept-btn ${done ? 'done' : ''}" data-dept="${d}" onclick="handleDeptClickDay('${state.currentUser}','${esc(actName)}','${d}','${dateStr}')" title="${getDeptLabel(d)}">${d}</div>`;
   }
   html += `</div>
       <div class="modal-actions">
@@ -558,9 +558,8 @@ function showDayDetail(supId, actName, dateStr) {
 
 function handleDeptClickDay(supId, actName, dept, dateStr) {
   toggleDept(supId, actName, dept, new Date(dateStr + 'T12:00:00'));
-  const modal = document.getElementById('day-modal');
-  if (modal) modal.remove();
-  renderWeekView();
+  const btn = document.querySelector(`#day-dept-grid .dept-btn[data-dept="${dept}"]`);
+  if (btn) btn.classList.toggle('done');
 }
 
 function closeDayModal(e) {
