@@ -1,5 +1,5 @@
 {
-  "exportedAt": "2026-07-07T19:09:52.274Z",
+  "exportedAt": "2026-07-10T17:14:46.058Z",
   "progress": {
     "hernan-castro::DUCTOS SANITARIOS SHAFT::2026-07-03": [
       "1401"
@@ -332,6 +332,9 @@
     "oscar-navarrete::MUEBLE AÉREO COCINA::2026-05-25": [
       "605",
       "606"
+    ],
+    "hernan-castro::DISTRIBUCIÓN AP TABIQUERÍA::2026-05-25": [
+      "1301"
     ]
   }
 }
