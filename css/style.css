@@ -73,6 +73,7 @@ html, body { height: 100%; font-family: -apple-system, 'Segoe UI', Roboto, sans-
 /* WEEK VIEW */
 .week-header { display: grid; grid-template-columns: 2fr repeat(5, 1fr); gap: 4px; margin-bottom: 8px; font-size: 11px; color: var(--text2); text-align: center; }
 .week-header .today-header { color: var(--danger); font-weight: 700; }
+.week-header .incomplete-header { color: var(--danger); }
 .week-row { display: grid; grid-template-columns: 2fr repeat(5, 1fr); gap: 4px; margin-bottom: 4px; align-items: center; }
 .week-row .act-name { font-size: 12px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; padding-right: 4px; }
 .day-cell { height: 32px; border-radius: 6px; border: 1px solid var(--surface2); display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; cursor: pointer; background: var(--surface2); transition: all .15s; }
@@ -80,6 +81,7 @@ html, body { height: 100%; font-family: -apple-system, 'Segoe UI', Roboto, sans-
 .day-cell.has-dept { border-color: var(--accent); background: rgba(15,52,96,.3); }
 .day-cell.done { background: rgba(46,204,113,.25); border-color: var(--success); color: var(--success); }
 .day-cell.partial { background: rgba(241,196,15,.2); border-color: var(--warning); color: var(--warning); }
+.day-cell.day-incomplete { box-shadow: inset 0 0 0 2px var(--danger); }
 .day-cell.today { border-color: var(--danger); box-shadow: 0 0 0 1px var(--danger); background: rgba(231,76,60,.1); }
 .day-cell .check { display: none; }
 .day-cell.done .check { display: inline; }

@@ -502,13 +502,6 @@ function renderWeekView() {
   const weekDayNames = ['Vie', 'Lun', 'Mar', 'Mié', 'Jue'];
   const todayDow = new Date().getDay();
   const weekDowMap = [5, 1, 2, 3, 4];
-  let weekHeaderHtml = '<div class="week-header"><div>Actividad</div>';
-  for (let i = 0; i < 5; i++) {
-    const isTodayHead = weekDowMap[i] === todayDow;
-    weekHeaderHtml += `<div${isTodayHead ? ' class="today-header"' : ''}>${weekDayNames[i]} ${dates[i].getDate()}</div>`;
-  }
-  weekHeaderHtml += '</div>';
-
   // Compute per-day totals across all activities
   const dayTotals = [{done:0,total:0},{done:0,total:0},{done:0,total:0},{done:0,total:0},{done:0,total:0}];
   for (const comp of companies) {
@@ -543,7 +536,20 @@ function renderWeekView() {
     else color = 'var(--text2)';
     daySummaryHtml += `<div style="text-align:center;color:${color}${isToday ? ';font-weight:700' : ''}">${t.total > 0 ? pct + '%' : '—'}</div>`;
   }
-  daySummaryHtml += '</div>';
+    daySummaryHtml += '</div>';
+
+  // Build week header with highlights for today and incomplete days
+  let weekHeaderHtml = '<div class="week-header"><div>Actividad</div>';
+  for (let i = 0; i < 5; i++) {
+    const isTodayHead = weekDowMap[i] === todayDow;
+    const dayComplete = dayTotals[i].total > 0 && dayTotals[i].done === dayTotals[i].total;
+    const dayHasWork = dayTotals[i].total > 0;
+    let headCls = '';
+    if (isTodayHead) headCls = 'today-header';
+    else if (dayHasWork && !dayComplete) headCls = 'incomplete-header';
+    weekHeaderHtml += `<div${headCls ? ' class="' + headCls + '"' : ''}>${weekDayNames[i]} ${dates[i].getDate()}</div>`;
+  }
+  weekHeaderHtml += '</div>';
 
   let html = `
     <div class="week-selector">
@@ -574,10 +580,12 @@ function renderWeekView() {
         const done = doneDepts.length;
         const allDone = total > 0 && done === total;
         const someDone = total > 0 && done > 0 && !allDone;
+        const dayComplete = dayTotals[i].total > 0 && dayTotals[i].done === dayTotals[i].total;
         const isToday = dateStr === todayStr;
         let cls = 'day-cell';
         if (allDone) cls += ' done';
         else if (someDone) cls += ' partial';
+        if (!dayComplete && dayTotals[i].total > 0) cls += ' day-incomplete';
         if (isToday) cls += ' today';
         if (total > 0) cls += ' has-dept';
         html += `<div class="${cls}" onclick="showDayDetail('${state.currentUser}','${esc(act.name)}','${dateStr}')">
