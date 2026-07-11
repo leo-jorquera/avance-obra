@@ -508,6 +508,43 @@ function renderWeekView() {
     weekHeaderHtml += `<div${isTodayHead ? ' class="today-header"' : ''}>${weekDayNames[i]} ${dates[i].getDate()}</div>`;
   }
   weekHeaderHtml += '</div>';
+
+  // Compute per-day totals across all activities
+  const dayTotals = [{done:0,total:0},{done:0,total:0},{done:0,total:0},{done:0,total:0},{done:0,total:0}];
+  for (const comp of companies) {
+    const data = activitiesData[comp];
+    if (!data) continue;
+    for (const act of data.activities) {
+      const weekData = data.week[act.name];
+      if (!weekData) continue;
+      for (let i = 0; i < 5; i++) {
+        const dayKey = WEEKDAYS[i];
+        const date = dates[i];
+        const depts = weekData[dayKey] || [];
+        for (const d of depts) {
+          dayTotals[i].total++;
+          if (isDeptDone(state.currentUser, act.name, d, date)) dayTotals[i].done++;
+        }
+      }
+    }
+  }
+
+  let daySummaryHtml = '<div class="week-row" style="font-size:11px;font-weight:600"><div style="color:var(--text2)">⚡ Día</div>';
+  for (let i = 0; i < 5; i++) {
+    const t = dayTotals[i];
+    const pct = t.total ? Math.round(t.done/t.total*100) : 0;
+    const allOk = t.total > 0 && pct === 100;
+    const someOk = t.total > 0 && pct > 0 && !allOk;
+    const isToday = weekDowMap[i] === todayDow;
+    let color;
+    if (allOk) color = 'var(--success)';
+    else if (someOk) color = 'var(--warning)';
+    else if (t.total > 0) color = 'var(--danger)';
+    else color = 'var(--text2)';
+    daySummaryHtml += `<div style="text-align:center;color:${color}${isToday ? ';font-weight:700' : ''}">${t.total > 0 ? pct + '%' : '—'}</div>`;
+  }
+  daySummaryHtml += '</div>';
+
   let html = `
     <div class="week-selector">
       <button onclick="shiftWeek(-1)">◀</button>
@@ -515,6 +552,7 @@ function renderWeekView() {
       <button onclick="shiftWeek(1)">▶</button>
     </div>
     ${weekHeaderHtml}
+    ${daySummaryHtml}
   `;
   for (const comp of companies) {
     const data = activitiesData[comp];
